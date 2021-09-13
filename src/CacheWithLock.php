@@ -12,14 +12,14 @@ declare(strict_types=1);
 namespace Enikeishik\CacheWithLock;
 
 use Closure;
-use Illuminate\Cache\CacheManager as BaseCache;
+use Illuminate\Cache\CacheManager as BaseCacheManager;
 
 /**
  * This class overrides remember method using lock mechanism 
  * to avoid multiply generation of the same data 
  * (as a result of race condition) when cache becomes invalid
  */
-class CacheWithLock extends BaseCache
+class CacheManager extends BaseCacheManager
 {
     protected int $lockTimeout = 10;
     

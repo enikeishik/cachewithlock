@@ -20,5 +20,12 @@
     "psr-4": {
       "Enikeishik\\CacheWithLock\\": "src"
     }
+  },
+  "extra": {
+    "laravel": {
+      "aliases": {
+        "Cache": "Enikeishik\\CacheWithLock\\Facade"
+      }
+    }
   }
 }
