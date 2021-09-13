@@ -1,0 +1,24 @@
+{
+  "name": "enikeishik/cachewithlock",
+  "type": "library",
+  "description": "CacheWithLock package for Laravel framework - overrides remember method of Laravel Cache using lock mechanism.",
+  "keywords": ["cache","caching","lock","locking","laravel","framework","package","web"],
+  "license": "GPL-2.0-or-later",
+  "version": "1.0.0",
+  "authors": [
+      {
+        "name": "Enikeishik",
+        "email": "enikeishik@gmail.com",
+        "role": "Developer"
+      }
+  ],
+  "require": {
+    "php": "^7.4",
+    "laravel/framework": "^7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Enikeishik\\CacheWithLock\\": "src"
+    }
+  }
+}
