@@ -24,7 +24,7 @@
   "extra": {
     "laravel": {
       "aliases": {
-        "Cache": "Enikeishik\\CacheWithLock\\Facade"
+        "CacheWithLock": "Enikeishik\\CacheWithLock\\Facade"
       }
     }
   }
