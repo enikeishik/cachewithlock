@@ -1,6 +1,6 @@
 <?php
 /**
- * CacheWithLock package for Laravel framework.
+ * CacheWholePage package for Laravel framework.
  * 
  * @copyright   Copyright (C) 2021 Enikeishik <enikeishik@gmail.com>. All rights reserved.
  * @author      Enikeishik <enikeishik@gmail.com>
@@ -11,12 +11,12 @@ declare(strict_types=1);
 
 namespace Enikeishik\CacheWithLock;
 
-use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Facade as BaseFacade;
 
 /**
  * @see \Enikeishik\CacheWithLock\CacheManager
  */
-class Facade extends Facade
+class Facade extends BaseFacade
 {
     /**
      * Get the name of the class registered in the Application container.
