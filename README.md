@@ -25,5 +25,12 @@ composer dump-autoload
 ## Usage
 
 ```php
+use CacheWithLock;
+
+...
+
+$value = CacheWithLock::remember(...);
+
+...
 
 ```
