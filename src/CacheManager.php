@@ -27,7 +27,7 @@ class CacheManager extends BaseCacheManager
      * 
      * @var int
      */
-    protected int $lockTimeout = 10;
+    protected int $lockTimeout = 5;
     
     /**
      * Overrides constructor with type hint,
