@@ -23,6 +23,9 @@
   },
   "extra": {
     "laravel": {
+      "providers": [
+        "Enikeishik\\CacheWithLock\\ServiceProvider"
+      ],
       "aliases": {
         "CacheWithLock": "Enikeishik\\CacheWithLock\\Facade"
       }
