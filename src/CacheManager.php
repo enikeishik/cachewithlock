@@ -12,8 +12,11 @@ declare(strict_types=1);
 namespace Enikeishik\CacheWithLock;
 
 use Closure;
+use Throwable;
 use Illuminate\Cache\CacheManager as BaseCacheManager;
 use Illuminate\Contracts\Cache\LockProvider;
+use Illuminate\Contracts\Cache\LockTimeoutException;
+use Illuminate\Support\Facades\Log;
 
 /**
  * This class overrides remember method using lock mechanism 
@@ -22,6 +25,17 @@ use Illuminate\Contracts\Cache\LockProvider;
  */
 class CacheManager extends BaseCacheManager
 {
+    /**
+     * @var string
+     */
+    protected const LOG_MESSAGE_PREFIX = "CACHEWITHLOCK\t";
+    
+    /**
+     * @var string
+     */
+    protected const DATA_GENERATION_SKIPPED = self::LOG_MESSAGE_PREFIX . 
+        'Generation of data was skipped, data generated in another proccess';
+    
     /**
      * Timeout of lock, in seconds.
      * 
@@ -67,7 +81,7 @@ class CacheManager extends BaseCacheManager
      */
     public function remember(string $key, $ttl, Closure $callback)
     {
-        $store = $this->store();
+        $store = $this->store()->getStore();
         
         $value = $store->get($key);
         if (null !== $value) {
@@ -88,11 +102,16 @@ class CacheManager extends BaseCacheManager
                 //just get it and return without generation
                 $value = $store->get($key);
                 if (null !== $value) {
+                    Log::info(self::DATA_GENERATION_SKIPPED);
                     return $value;
                 }
                 
                 $value = $callback();
             }
+        } catch (LockTimeoutException $e) {
+            Log::notice(self::LOG_MESSAGE_PREFIX . "LockTimeoutException\t" . $e->getMessage());
+        } catch (Throwable $e) {
+            Log::error(self::LOG_MESSAGE_PREFIX . "Throwable\t" . $e->getMessage());
         } finally {
             $lock->release();
         }
