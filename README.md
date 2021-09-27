@@ -1,7 +1,9 @@
 # CacheWithLock
 
 Package for [Laravel framework](https://laravel.com/) - 
-overrides remember method of Laravel Cache using lock mechanism.
+overrides `remember` method of Laravel Cache using lock mechanism
+to avoid multiply generation of the same data (as a result of 
+race condition) when cache becomes invalid.
 
 ## Requirements
 
