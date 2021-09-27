@@ -24,12 +24,20 @@ Make sure autoload will be changed:
 composer dump-autoload
 ```
 
+Publish package via artisan:
+
+```bash
+php artisan vendor:publish --provider="Enikeishik\CacheWithLock\ServiceProvider"
+```
+
+This command copy configuration file into corresponding project folder.
+
 ## Usage
 
 Package service provider contains an `extend` call to override Laravel Cache class.
 So there is no need to make any changes in code.
 
-Overriding can be disabled by commenting `extend` call.
+Overriding can be disabled in package configuration.
 
 Without overriding Laravel Cache use `CacheWithLock` facade:
 
