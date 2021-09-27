@@ -19,12 +19,25 @@ class ServiceProvider extends BaseServiceProvider
 {
     public function register()
     {
+        if ($this->app->runningInConsole()) {
+            $this->publishResources();
+        }
+
         $this->app->singleton('Enikeishik\CacheWithLock\CacheManager', function($app) {
             return new CacheManager($app);
         });
         
-        $this->app->extend(BaseCacheManager::class, function ($service, $app) {
-            return new CacheManager($app);
-        });
+        if (true === config('cachewithlock.override_cache')) {
+            $this->app->extend(BaseCacheManager::class, function ($service, $app) {
+                return new CacheManager($app);
+            });
+        }
+    }
+
+    protected function publishResources()
+    {
+        $this->publishes([
+            __DIR__ . '/../config' => config_path(),
+        ], 'cachewithlock-config');
     }
 }

@@ -37,11 +37,23 @@ class CacheManager extends BaseCacheManager
         'Generation of data was skipped, data generated in another proccess';
     
     /**
+     * @var int
+     */
+    protected const LOCK_TIMEOUT = 5;
+    
+    /**
      * Timeout of lock, in seconds.
      * 
      * @var int
      */
-    protected int $lockTimeout = 5;
+    protected int $lockTimeout = self::LOCK_TIMEOUT;
+
+    /**
+     * Logging every skip of data generation (for statistics purposes).
+     * 
+     * @var bool
+     */
+    protected bool $usageLogging = true;
     
     /**
      * Overrides constructor with type hint,
@@ -53,6 +65,13 @@ class CacheManager extends BaseCacheManager
     public function __construct(\Illuminate\Contracts\Foundation\Application $app)
     {
         parent::__construct($app);
+
+        $this->lockTimeout = (int) config('cachewithlock.lock_timeout');
+        if ($this->lockTimeout < 1) {
+            $this->lockTimeout = self::LOCK_TIMEOUT;
+        }
+
+        $this->usageLogging = true === config('cachewithlock.usage_logging');
     }
     
     /**
@@ -102,7 +121,9 @@ class CacheManager extends BaseCacheManager
                 //just get it and return without generation
                 $value = $store->get($key);
                 if (null !== $value) {
-                    Log::info(self::DATA_GENERATION_SKIPPED);
+                    if ($this->usageLogging) {
+                        Log::info(self::DATA_GENERATION_SKIPPED);
+                    }
                     return $value;
                 }
                 
