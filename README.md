@@ -24,6 +24,13 @@ composer dump-autoload
 
 ## Usage
 
+Package service provider contains an `extend` call to override Laravel Cache class.
+So there is no need to make any changes in code.
+
+Overriding can be disabled by commenting `extend` call.
+
+Without overriding Laravel Cache use `CacheWithLock` facade:
+
 ```php
 use CacheWithLock;
 
