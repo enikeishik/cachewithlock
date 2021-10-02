@@ -34,7 +34,19 @@ class CacheManager extends BaseCacheManager
      * @var string
      */
     protected const DATA_GENERATION_SKIPPED = self::LOG_MESSAGE_PREFIX . 
-        'Generation of data was skipped, data generated in another proccess';
+        'Generation skipped for ';
+    
+    /**
+     * @var string
+     */
+    protected const LOCK_TIMEOUT_EXCEPTION = self::LOG_MESSAGE_PREFIX . 
+        'LockTimeoutException for ';
+    
+    /**
+     * @var string
+     */
+    protected const UNKNOWN_EXCEPTION = self::LOG_MESSAGE_PREFIX . 
+        'Catch Throwable for ';
     
     /**
      * @var int
@@ -122,7 +134,7 @@ class CacheManager extends BaseCacheManager
                 $value = $store->get($key);
                 if (null !== $value) {
                     if ($this->usageLogging) {
-                        Log::info(self::DATA_GENERATION_SKIPPED);
+                        Log::info(self::DATA_GENERATION_SKIPPED . $key);
                     }
                     return $value;
                 }
@@ -130,9 +142,9 @@ class CacheManager extends BaseCacheManager
                 $value = $callback();
             }
         } catch (LockTimeoutException $e) {
-            Log::notice(self::LOG_MESSAGE_PREFIX . "LockTimeoutException\t" . $e->getMessage());
+            Log::notice(self::LOCK_TIMEOUT_EXCEPTION . $key . "\t" . $e->getMessage());
         } catch (Throwable $e) {
-            Log::error(self::LOG_MESSAGE_PREFIX . "Throwable\t" . $e->getMessage());
+            Log::error(self::UNKNOWN_EXCEPTION . $key . "\t" . $e->getMessage());
         } finally {
             $lock->release();
         }
